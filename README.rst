@@ -1,30 +1,160 @@
 pandadoc: lightweight pandoc wrapper
 ====================================
 
-An extremely lightweight pandoc wrapper.
-
-.. description
-
-Installation
-------------
-
-.. Install package instructions
-
-.. pandoc config instructions
-
-Usage
------
-
-.. Basic Usage
+An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.7+.
 
 Features
 --------
 
-.. Docs
+* Supports conversion between all formats that ``pandoc`` supports -
+   markdown, HTML, LaTeX, Word, epub, pdf (output),
+   `and more <https://pandoc.org/demos.html>`_.
 
-.. Bugs/requests
+* Output to raw ``bytes`` (binary formats - e.g. PDF), to ``str`` objects
+  (text formats - e.g. markdown), or to file (any format).
 
-.. Changelog
+* ``pandoc`` errors are raised as (informative) exceptions.
+
+* Full flexibility of the command-line tool, and the same syntax. (See the
+  `pandoc manual <https://pandoc.org/MANUAL.html>`_ for more information.)
+
+Installation
+------------
+
+First, ensure ``pandadoc`` is on your ``PATH``.
+(In other words, `install pandoc <https://pandoc.org/installing.html>`_ and add it to
+your ``PATH``.)
+
+Then install ``pandadoc`` from `PyPI <https://pypi.org/project/pandadoc/>`_:
+
+.. code-block:: console
+
+    $ python -m pip install pandadoc
+
+That's it.
+
+Usage
+-----
+
+This section contains examples of usage.
+For an explanation of how it works, see the next section.
+
+Convert a webpage to markdown, and store it as a python ``str``:
+
+.. code-block:: python
+
+    >>> import pandadoc
+    >>> input_url = "https://example.com/"
+    >>> example_md = pandadoc.call_pandoc(
+    ...    options=["-t", "markdown"], files=[input_url]
+    ... )
+    >>> print(example_md)
+    <div>
+
+    # Example Domain
+    
+    This domain is for use in illustrative examples in documents.
+    ...
+
+Now convert the markdown to RTF, and write it to a file:
+
+.. code-block:: python
+
+    >>> rtf_output_file = "example.rtf"
+    >>> pandadoc.call_pandoc(
+    ...     options=["-f", "markdown", "-t", "rtf", "-o", rtf_output_file], 
+    ...     input_text=example_md,
+    ... )
+    ''
+
+Notice that ``call_pandoc`` returns an empty string ``''`` when a file output is used.
+Looking at the output file:
+
+::
+
+    *example.rtf*
+    {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Example Domain\par}
+    {\pard \ql \f0 \sa180 \li0 \fi0 This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.\par}
+    {\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://www.iana.org/domains/example"}}{\fldrslt{\ul
+    More information...
+    }}}
+    \par}
+
+Convert this RTF document to PDF, using xelatex with a custom character set,
+and store the result as raw ``bytes``:
+
+.. code-block:: python
+
+    >>> raw_pdf = pandadoc.call_pandoc(
+    ...     options=["-f", "markdown", "-t", "pdf", "--pdf-engine", "xelatex", "--variable-mainfont",  "Palatino"],
+    ...     files=[rtf_output_file],
+    ...     decode=False,
+    ... )
+
+Now you can send those raw bytes over a network, or write them to a file:
+
+.. code-block:: python
+
+    >>> with open("example.pdf", "wb") as f:
+    ...     f.write(raw_pdf)
+    ... 
+    >>> # Finished
+
+You can find more ``pandoc`` examples `here <https://pandoc.org/demos.html>`_.
+
+Exceptions
+----------
+
+If ``pandoc`` exits with an error, an appropriate exception is raised (based on the
+`exit code <https://pandoc.org/MANUAL.html#exit-codes>`_):
+
+.. code-block:: python
+
+    >>> pandadoc.call_pandoc(
+    ...     options=["-f", "markdown", "-t", "zzz"], # non-existent format
+    ...     input_text=example_md,
+    ... )
+    Traceback (most recent call last):
+    ...
+    pandadoc.exceptions.PandocUnknownWriterError: Unknown output format zzz
+    >>> isinstance(pandadoc.exceptions.PandocUnknownWriterError(), pandadoc.PandocError)
+    True
+
+You can find a full list of exceptions in the ``pandadoc.exceptions`` module.
+
+Explanation
+-----------
+
+The ``pandoc`` command-line tool works like this::
+
+    pandoc [OPTIONS] [FILES]
+
+In addition to the ``OPTIONS``
+(documented `here <https://pandoc.org/MANUAL.html#options>`_),
+you can provide either some ``FILES``, or some input text (via ``stdin``).
+
+The ``call_pandoc`` function of ``pandadoc`` works in a similar way:
+
+* The ``options`` argument contains a list of pandoc options.
+  E.g. ``["-f", "markdown", "-t", "html"]``.
+
+* The ``files`` argument is a list of file paths (or absolute URIs).
+  E.g. ``["path/to/file.md", "https://www.fsf.org"]``
+
+* The ``input_text`` argument is used as text input to pandoc.
+  E.g. ``# Simple Doc\n\nA simple markdown document\n``.
+
+The ``timeout`` and ``decode`` arguments are used to control whether the ``pandoc``
+process times out, and whether the result should be decoded to a ``str``
+(``True`` by default).
+
+Bugs/Requests
+-------------
+
+Please use the `GitHub issue tracker <https://github.com/chris-mcdo/obscraper/issues>`_
+to submit bugs or request features.
+
+Feedback is always appreciated.
 
 License
 -------

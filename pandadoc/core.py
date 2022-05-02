@@ -6,14 +6,14 @@ from pandadoc.exceptions import get_exception_by_error_code
 
 def call_pandoc(
     options: Sequence[str],
+    files: Optional[Sequence[str]] = None,
     input_text: Optional[str] = None,
-    input_files: Optional[Sequence[str]] = None,
     timeout: Optional[float] = None,
     decode: bool = True,
 ) -> Union[str, bytes]:
     """Call pandoc and return any output.
 
-    At most one of `text` and `input_files` can be provided.
+    At most one of `text` and `files` can be provided.
 
     For more information on pandoc options, see https://pandoc.org/MANUAL.html.
 
@@ -21,11 +21,11 @@ def call_pandoc(
     ----------
     options
         A list of pandoc options. E.g. ``["-f", "markdown", "-t", "html"]``.
-    input_text
-        Text input to pandoc. E.g. ``# Simple Doc\n\nA simple markdown document\n``.
-    input_files
+    files
         A list of paths (or absolute URIs) to input data. E.g. ``["path/to/file.md",
         "https://www.fsf.org"]``.
+    input_text
+        Text input to pandoc. E.g. ``# Simple Doc\n\nA simple markdown document\n``.
     timeout
         A timeout for the called process.
     decode
@@ -48,16 +48,17 @@ def call_pandoc(
         If `decode` is True and the result could not be decoded.
     """
     # Clean arguments
-    if input_text and input_files:
-        raise ValueError("Both input_text and input_files were provided.")
+    if input_text and files:
+        raise ValueError("Both input_text and files were provided.")
 
-    if input_files is None:
-        input_files = []
+    if files is None:
+        files = []
 
+    input = None
     if input_text is not None:
         input: bytes = input_text.encode(encoding="utf-8")
 
-    args: Sequence[str] = ["pandoc", *options, *input_files]
+    args: Sequence[str] = ["pandoc", *options, *files]
 
     # Run pandoc
     pandoc_process = subprocess.run(

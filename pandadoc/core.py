@@ -1,0 +1,82 @@
+import subprocess
+from typing import Optional, Sequence, Union
+
+from pandadoc.exceptions import get_exception_by_error_code
+
+
+def call_pandoc(
+    options: Sequence[str],
+    input_text: Optional[str] = None,
+    input_files: Optional[Sequence[str]] = None,
+    timeout: Optional[float] = None,
+    decode: bool = True,
+) -> Union[str, bytes]:
+    """Call pandoc and return any output.
+
+    At most one of `text` and `input_files` can be provided.
+
+    For more information on pandoc options, see https://pandoc.org/MANUAL.html.
+
+    Parameters
+    ----------
+    options
+        A list of pandoc options. E.g. ``["-f", "markdown", "-t", "html"]``.
+    input_text
+        Text input to pandoc. E.g. ``# Simple Doc\n\nA simple markdown document\n``.
+    input_files
+        A list of paths (or absolute URIs) to input data. E.g. ``["path/to/file.md",
+        "https://www.fsf.org"]``.
+    timeout
+        A timeout for the called process.
+    decode
+        Whether to decode the result to a ``str``, or leave the result as UTF-8-encoded
+        ``bytes``.
+
+    Returns
+    -------
+    The result returned by pandoc, either as a string (if ``decode=True``) or
+    UTF-8-encoded bytes (if ``decode=False``). Empty if an output file is specified.
+
+    Raises
+    ------
+    TimeoutExpired
+        If the process takes longer than `timeout` to complete.
+    PandocError
+        ``PandocError`` or a subclass of ``PandocError`` is raised if the process
+        exits with a non-zero exit code.
+    UnicodeError
+        If `decode` is True and the result could not be decoded.
+    """
+    # Clean arguments
+    if input_text and input_files:
+        raise ValueError("Both input_text and input_files were provided.")
+
+    if input_files is None:
+        input_files = []
+
+    if input_text is not None:
+        input: bytes = input_text.encode(encoding="utf-8")
+
+    args: Sequence[str] = ["pandoc", *options, *input_files]
+
+    # Run pandoc
+    pandoc_process = subprocess.run(
+        args, input=input, capture_output=True, timeout=timeout
+    )
+
+    # Raise exception if needed
+    if (error_code := pandoc_process.returncode) > 0:
+        message = pandoc_process.stderr.decode("utf-8")
+        raise get_exception_by_error_code(error_code)(message)
+
+    # Return
+    if decode:
+        try:
+            return pandoc_process.stdout.decode(encoding="utf-8")
+        except UnicodeDecodeError as exc:
+            raise UnicodeError(
+                "Could not decode pandoc output."
+                " (Maybe you meant to set `decode` to False?)"
+            ) from exc
+    else:
+        return pandoc_process.stdout

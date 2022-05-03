@@ -32,7 +32,7 @@ pandadoc: lightweight pandoc wrapper
   :alt: MIT License
 
 
-An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.7+.
+An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.8+.
 
 Features
 --------

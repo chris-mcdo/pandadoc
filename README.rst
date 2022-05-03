@@ -163,7 +163,7 @@ The ``pandoc`` command-line tool works like this::
     pandoc [OPTIONS] [FILES]
 
 In addition to the ``OPTIONS``
-(documented `here <https://pandoc.org/MANUAL.html#options>`_),
+(`documented here <https://pandoc.org/MANUAL.html#options>`_),
 you can provide either some ``FILES``, or some input text (via ``stdin``).
 
 The ``call_pandoc`` function of ``pandadoc`` works in a similar way:

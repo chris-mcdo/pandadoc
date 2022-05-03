@@ -1,5 +1,36 @@
+.. image:: https://raw.githubusercontent.com/chris-mcdo/pandadoc/main/panda.svg
+   :align: center
+   :height: 200
+   :alt: pandadoc
+
+
 pandadoc: lightweight pandoc wrapper
 ====================================
+
+.. image:: https://img.shields.io/pypi/v/pandadoc.svg
+    :target: https://pypi.org/project/pandadoc/
+    :alt: Project Version on PyPI
+
+.. image:: https://img.shields.io/pypi/pyversions/pandadoc.svg
+    :target: https://pypi.org/project/pandadoc/
+    :alt: Supported Python Versions
+
+.. image:: https://github.com/chris-mcdo/pandadoc/workflows/tests/badge.svg
+  :target: https://github.com/chris-mcdo/pandadoc/actions?query=workflow%3Atests
+  :alt: Unit Tests
+
+.. image:: https://codecov.io/gh/chris-mcdo/pandadoc/branch/main/graph/badge.svg
+  :target: https://codecov.io/gh/chris-mcdo/pandadoc
+  :alt: Unit Test Coverage
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+  :target: https://github.com/psf/black
+  :alt: Code Style: Black
+
+.. image:: https://img.shields.io/badge/license-MIT-purple
+  :target: https://github.com/chris-mcdo/pandadoc/blob/main/LICENSE
+  :alt: MIT License
+
 
 An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.7+.
 
@@ -151,7 +182,7 @@ process times out, and whether the result should be decoded to a ``str``
 Bugs/Requests
 -------------
 
-Please use the `GitHub issue tracker <https://github.com/chris-mcdo/obscraper/issues>`_
+Please use the `GitHub issue tracker <https://github.com/chris-mcdo/pandadoc/issues>`_
 to submit bugs or request features.
 
 Feedback is always appreciated.

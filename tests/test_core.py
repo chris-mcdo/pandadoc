@@ -161,3 +161,12 @@ def test_produces_output_with_url():
     else:
         assert isinstance(result, str)
         assert len(result) > 0
+
+
+def test_cannot_provide_files_and_input_text():
+    options = ["-f", "html", "-t", "markdown"]
+
+    with pytest.raises(ValueError):
+        call_pandoc(
+            options=options, files=["https://example.com/"], input_text="# Example"
+        )

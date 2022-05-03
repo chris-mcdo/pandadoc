@@ -8,12 +8,12 @@ pandadoc: lightweight pandoc wrapper
 ====================================
 
 .. image:: https://img.shields.io/pypi/v/pandadoc.svg
-    :target: https://pypi.org/project/pandadoc/
-    :alt: Project Version on PyPI
+  :target: https://pypi.org/project/pandadoc/
+  :alt: Project Version on PyPI
 
 .. image:: https://img.shields.io/pypi/pyversions/pandadoc.svg
-    :target: https://pypi.org/project/pandadoc/
-    :alt: Supported Python Versions
+  :target: https://pypi.org/project/pandadoc/
+  :alt: Supported Python Versions
 
 .. image:: https://github.com/chris-mcdo/pandadoc/workflows/tests/badge.svg
   :target: https://github.com/chris-mcdo/pandadoc/actions?query=workflow%3Atests
@@ -37,16 +37,16 @@ An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.7+
 Features
 --------
 
-* Supports conversion between all formats that ``pandoc`` supports -
-   markdown, HTML, LaTeX, Word, epub, pdf (output),
-   `and more <https://pandoc.org/demos.html>`_.
+- Supports conversion between all formats that ``pandoc`` supports -
+  markdown, HTML, LaTeX, Word, epub, pdf (output),
+  `and more <https://pandoc.org/demos.html>`_.
 
-* Output to raw ``bytes`` (binary formats - e.g. PDF), to ``str`` objects
+- Output to raw ``bytes`` (binary formats - e.g. PDF), to ``str`` objects
   (text formats - e.g. markdown), or to file (any format).
 
-* ``pandoc`` errors are raised as (informative) exceptions.
+- ``pandoc`` errors are raised as (informative) exceptions.
 
-* Full flexibility of the command-line tool, and the same syntax. (See the
+- Full flexibility of the command-line tool, and the same syntax. (See the
   `pandoc manual <https://pandoc.org/MANUAL.html>`_ for more information.)
 
 Installation
@@ -103,7 +103,6 @@ Looking at the output file:
 
 ::
 
-    *example.rtf*
     {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Example Domain\par}
     {\pard \ql \f0 \sa180 \li0 \fi0 This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.\par}
     {\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://www.iana.org/domains/example"}}{\fldrslt{\ul
@@ -166,13 +165,13 @@ you can provide either some ``FILES``, or some input text (via ``stdin``).
 
 The ``call_pandoc`` function of ``pandadoc`` works in a similar way:
 
-* The ``options`` argument contains a list of pandoc options.
+- The ``options`` argument contains a list of pandoc options.
   E.g. ``["-f", "markdown", "-t", "html"]``.
 
-* The ``files`` argument is a list of file paths (or absolute URIs).
+- The ``files`` argument is a list of file paths (or absolute URIs).
   E.g. ``["path/to/file.md", "https://www.fsf.org"]``
 
-* The ``input_text`` argument is used as text input to pandoc.
+- The ``input_text`` argument is used as text input to pandoc.
   E.g. ``# Simple Doc\n\nA simple markdown document\n``.
 
 The ``timeout`` and ``decode`` arguments are used to control whether the ``pandoc``

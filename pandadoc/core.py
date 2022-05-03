@@ -12,7 +12,7 @@ def call_pandoc(
     timeout: Optional[float] = None,
     decode: Literal[True] = ...,
 ) -> str:
-    ...
+    ...  # pragma: no cover
 
 
 @overload
@@ -24,7 +24,7 @@ def call_pandoc(
     *,
     decode: Literal[False],
 ) -> bytes:
-    ...
+    ...  # pragma: no cover
 
 
 def call_pandoc(

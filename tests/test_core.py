@@ -5,14 +5,13 @@ import hypothesis.strategies as st
 import pytest
 from hypothesis import given, settings
 from pandadoc import call_pandoc
-from pandadoc.exceptions import (
-    PandocError,
-    PandocHttpError,
-    PandocUnknownReaderError,
-    PandocUnknownWriterError,
-)
+from pandadoc.exceptions import (PandocError, PandocHttpError,
+                                 PandocPDFProgramNotFoundError,
+                                 PandocUnknownReaderError,
+                                 PandocUnknownWriterError)
 
-from constants import BINARY_OUTPUT_FORMATS, EXAMPLE_DOCUMENTS, TEXT_OUTPUT_FORMATS
+from constants import (BINARY_OUTPUT_FORMATS, EXAMPLE_DOCUMENTS,
+                       TEXT_OUTPUT_FORMATS)
 
 
 @settings(deadline=None)
@@ -47,6 +46,8 @@ def test_output_to_file(
         if output_format not in pandoc_output_formats:
             raise
         pass
+    except PandocPDFProgramNotFoundError:
+        pytest.xfail("No PDF program found.")
     except PandocError:
         pytest.fail("PandocError raised during conversion.")
 
@@ -106,6 +107,8 @@ def test_output_to_bytes(
         if output_format in pandoc_output_formats:
             raise
         pass
+    except PandocPDFProgramNotFoundError:
+        pytest.xfail("No PDF program found.")
     except PandocError:
         pytest.fail("PandocError raised during conversion.")
     else:
@@ -139,6 +142,8 @@ def test_raises_unicode_error_when_decoding_binary_output(
             if output_format in pandoc_output_formats:
                 raise
             pass
+        except PandocPDFProgramNotFoundError:
+            pytest.xfail("No PDF program found.")
         except PandocError:
             pytest.fail("PandocError raised during conversion.")
 

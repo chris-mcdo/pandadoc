@@ -1,7 +1,30 @@
 import subprocess
-from typing import Optional, Sequence, Union
+from typing import Literal, Optional, Sequence, Union, overload
 
 from pandadoc.exceptions import get_exception_by_error_code
+
+
+@overload
+def call_pandoc(
+    options: Sequence[str],
+    files: Optional[Sequence[str]] = None,
+    input_text: Optional[str] = None,
+    timeout: Optional[float] = None,
+    decode: Literal[True] = ...,
+) -> str:
+    ...
+
+
+@overload
+def call_pandoc(
+    options: Sequence[str],
+    files: Optional[Sequence[str]] = None,
+    input_text: Optional[str] = None,
+    timeout: Optional[float] = None,
+    *,
+    decode: Literal[False],
+) -> bytes:
+    ...
 
 
 def call_pandoc(

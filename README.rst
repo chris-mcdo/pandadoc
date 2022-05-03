@@ -34,8 +34,7 @@ pandadoc: lightweight pandoc wrapper
 
 An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.8+.
 
-Features
---------
+Its features:
 
 - Supports conversion between all formats that ``pandoc`` supports -
   markdown, HTML, LaTeX, Word, epub, pdf (output),
@@ -46,13 +45,16 @@ Features
 
 - ``pandoc`` errors are raised as (informative) exceptions.
 
-- Full flexibility of the command-line tool, and the same syntax. (See the
+- Full flexibility of the ``pandoc`` command-line tool, and the same syntax. (See the
   `pandoc manual <https://pandoc.org/MANUAL.html>`_ for more information.)
+
+Getting Started Guide
+*********************
 
 Installation
 ------------
 
-First, ensure ``pandadoc`` is on your ``PATH``.
+First, ensure ``pandoc`` is on your ``PATH``.
 (In other words, `install pandoc <https://pandoc.org/installing.html>`_ and add it to
 your ``PATH``.)
 
@@ -66,9 +68,6 @@ That's it.
 
 Usage
 -----
-
-This section contains examples of usage.
-For an explanation of how it works, see the next section.
 
 Convert a webpage to markdown, and store it as a python ``str``:
 
@@ -120,6 +119,10 @@ and store the result as raw ``bytes``:
     ...     files=[rtf_output_file],
     ...     decode=False,
     ... )
+
+Note that PDF conversion requires a
+"`PDF engine <https://pandoc.org/MANUAL.html#creating-a-pdf>`_"
+(e.g. pdflatex, latexmk etc.) to be installed.
 
 Now you can send those raw bytes over a network, or write them to a file:
 

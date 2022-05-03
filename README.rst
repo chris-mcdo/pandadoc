@@ -15,8 +15,8 @@ pandadoc: lightweight pandoc wrapper
   :target: https://pypi.org/project/pandadoc/
   :alt: Supported Python Versions
 
-.. image:: https://github.com/chris-mcdo/pandadoc/workflows/tests/badge.svg
-  :target: https://github.com/chris-mcdo/pandadoc/actions?query=workflow%3Atests
+.. image:: https://github.com/chris-mcdo/pandadoc/actions/workflows/main.yml/badge.svg
+  :target: https://github.com/chris-mcdo/pandadoc/actions/workflows/main.yml
   :alt: Unit Tests
 
 .. image:: https://codecov.io/gh/chris-mcdo/pandadoc/branch/main/graph/badge.svg
@@ -34,7 +34,7 @@ pandadoc: lightweight pandoc wrapper
 
 An extremely lightweight `pandoc <https://pandoc.org/>`_ wrapper for Python 3.8+.
 
-Its features:
+Features:
 
 - Supports conversion between all formats that ``pandoc`` supports -
   markdown, HTML, LaTeX, Word, epub, pdf (output),
@@ -69,14 +69,15 @@ That's it.
 Usage
 -----
 
-Convert a webpage to markdown, and store it as a python ``str``:
+Convert a webpage (or file) to markdown, and store it as a python ``str``:
 
 .. code-block:: python
 
     >>> import pandadoc
-    >>> input_url = "https://example.com/"
+    >>> input_file = "https://example.com/"
+    >>> # Or: input_file = "path/to/my/file.html"
     >>> example_md = pandadoc.call_pandoc(
-    ...    options=["-t", "markdown"], files=[input_url]
+    ...    options=["-t", "markdown"], files=[input_file]
     ... )
     >>> print(example_md)
     <div>
@@ -98,6 +99,7 @@ Now convert the markdown to RTF, and write it to a file:
     ''
 
 Notice that ``call_pandoc`` returns an empty string ``''`` when a file output is used.
+
 Looking at the output file:
 
 ::
@@ -120,9 +122,9 @@ and store the result as raw ``bytes``:
     ...     decode=False,
     ... )
 
-Note that PDF conversion requires a
+(Note that PDF conversion requires a
 "`PDF engine <https://pandoc.org/MANUAL.html#creating-a-pdf>`_"
-(e.g. pdflatex, latexmk etc.) to be installed.
+to be installed - e.g. pdflatex, latexmk etc.)
 
 Now you can send those raw bytes over a network, or write them to a file:
 
@@ -177,9 +179,10 @@ The ``call_pandoc`` function of ``pandadoc`` works in a similar way:
 - The ``input_text`` argument is used as text input to pandoc.
   E.g. ``# Simple Doc\n\nA simple markdown document\n``.
 
-The ``timeout`` and ``decode`` arguments are used to control whether the ``pandoc``
-process times out, and whether the result should be decoded to a ``str``
-(``True`` by default).
+- The ``timeout`` argument can be used to stop pandoc if it takes too long.
+
+- The ``decode`` argument determines whether the result should be decoded to a ``str``
+  (``True`` by default) or left as raw bytes.
 
 Bugs/Requests
 -------------
